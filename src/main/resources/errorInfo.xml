@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 <beans>
-	<bean id="errorInfos" class="cn.crap.framework.ErrorInfos">
+<!-- 	<bean id="errorInfos" class="cn.crap.framework.ErrorInfos">
 		<property name="errMsgs">
 			<map>
 				<entry key="000001" value="系统未知错误" />
@@ -63,5 +63,5 @@
 				<entry key="000057" value="尚未静态化，静态化后方可下载"/>
 			</map>
 		</property>
-	</bean>
+	</bean> -->
 </beans>
