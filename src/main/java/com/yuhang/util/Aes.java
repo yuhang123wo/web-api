@@ -4,7 +4,9 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.yuhang.domain.Setting;
 import com.yuhang.framework.SpringContextHolder;
+import com.yuhang.service.CacheService;
 
 public class Aes {
 	private static String handlerKey(String apiKey) {
@@ -20,8 +22,7 @@ public class Aes {
 	public static final String iv = "CRAPG_@W8#_19#10";
 
 	public static String encrypt(String data) {
-		ICacheService cacheService = SpringContextHolder
-				.getBean("cacheService", CacheService.class);
+		CacheService cacheService = SpringContextHolder.getBean("cacheService", CacheService.class);
 		Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
 		String PWD = "";
 		if (setting != null)
@@ -55,7 +56,7 @@ public class Aes {
 	}
 
 	public static String desEncrypt(String data) {
-		ICacheService cacheService = SpringContextHolder
+		CacheService cacheService = SpringContextHolder
 				.getBean("cacheService", CacheService.class);
 		Setting setting = cacheService.getSetting(Const.SETTING_SECRETKEY);
 		String PWD = "";

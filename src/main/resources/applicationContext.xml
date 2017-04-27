@@ -124,4 +124,5 @@
             </props>  
         </property>  
 	</bean> 
+	<import resource="applicationContext-redis.xml"/>
 </beans>
