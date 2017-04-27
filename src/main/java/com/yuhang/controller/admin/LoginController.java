@@ -8,13 +8,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yuhang.controller.BaseController;
 import com.yuhang.domain.User;
 import com.yuhang.dto.LoginDto;
 import com.yuhang.framework.ErrorInfos;
-import com.yuhang.framework.JsonResult;
 import com.yuhang.framework.MyException;
 import com.yuhang.service.UserService;
 import com.yuhang.util.MD5;
@@ -31,21 +29,20 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/login")
-	@ResponseBody
-	public JsonResult login(@ModelAttribute LoginDto model) {
+	public String login(@ModelAttribute LoginDto model) {
 		try {
 			User user = userService.loadUserByName(model.getUserName());
 			if (user != null) {
 				if (MD5.encrytMD5(model.getPassword()).equals(user.getPassword())
 						&& model.getUserName().equals(user.getUserName())) {
 					userService.login(model, user, request, response);
-					return new JsonResult(T_RETURN, model);
+					return "indexx";
 				}
 				model.setTipMessage("用户密码有误");
-				return new JsonResult(F_RETURN, model);
+				return "indexg";
 			} else {
 				model.setTipMessage("用户名不存在");
-				return new JsonResult(F_RETURN, model);
+				return "indexg";
 			}
 		} catch (Exception e) {
 			if (e instanceof MyException) {
@@ -66,7 +63,10 @@ public class LoginController extends BaseController {
 				model.setTipMessage("未知异常，请查看日志：" + cusedBy);
 			}
 		}
-		return new JsonResult(F_RETURN, model);
-
+		return "indexg";
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(MD5.encrytMD5("a"));
 	}
 }

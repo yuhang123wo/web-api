@@ -1,5 +1,4 @@
 package com.yuhang.domain;
-
 public class User extends Entity {
 
 	private static final long serialVersionUID = 2441623070772169750L;

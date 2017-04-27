@@ -10,8 +10,8 @@
 
 	<sql id="whereUser">
 		<where>
-			<if test="name!=null">
-				name=#{name}
+			<if test="userName!=null">
+				user_name=#{userName}
 			</if>
 			<if test="id!=null">
 				id=#{id}
@@ -19,21 +19,13 @@
 		</where>
 	</sql>
 
-	<select id="loadUserByName" parameterType="map" resultType="User">
-		select <include refid="selectUser" /> FROM user <include refid="whereUser" />
-		order by id desc
-		<if test="start!=null and size!=null">
-			limit #{start},#{size}
-		</if>
+	<select id="loadUserByName" parameterType="java.lang.String" resultType="User">
+		select <include refid="selectUser" /> FROM user where user_name=#{userName}
 	</select>
 	
 	
-	<select id="loadUserById" parameterType="map" resultType="User">
-		select <include refid="selectUser" /> FROM user <include refid="whereUser" />
-		order by id desc
-		<if test="start!=null and size!=null">
-			limit #{start},#{size}
-		</if>
+	<select id="loadUserById" parameterType="int" resultType="User">
+		select <include refid="selectUser" /> FROM user where id=#{id}
 	</select>
 
 </mapper>

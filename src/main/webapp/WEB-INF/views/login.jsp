@@ -23,14 +23,14 @@
 
 <div class="container">
 
-    <form class="form-signin" action="index.html">
+    <form class="form-signin" action="${pageContext.request.contextPath}/login" method="post">
         <div class="form-signin-heading text-center">
-            <h1 class="sign-title">Sign In</h1>
+            <h1 class="sign-title">登录</h1>
             <img src="${pageContext.request.contextPath}/images/login-logo.png" alt=""/>
         </div>
         <div class="login-wrap">
-            <input type="text" class="form-control" placeholder="用户名" autofocus>
-            <input type="password" class="form-control" placeholder="密码">
+            <input type="text"  name="userName" class="form-control" placeholder="用户名" autofocus>
+            <input type="password" name="password" class="form-control" placeholder="密码">
 
             <button class="btn btn-lg btn-login btn-block" type="submit">
                 <i class="fa fa-check"></i>
@@ -42,6 +42,9 @@
 
         </div>
 
+    </form>
+    
+    
         <!-- Modal -->
         <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
             <div class="modal-dialog">
@@ -63,8 +66,6 @@
             </div>
         </div>
         <!-- modal -->
-
-    </form>
 
 </div>
 
