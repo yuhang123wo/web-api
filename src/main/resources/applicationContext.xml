@@ -35,59 +35,83 @@
 	<!-- 业务错误码 -->
 	<import resource="errorInfo.xml" />
 	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<value>classpath:config.properties</value>
-		</property>
-		<property name="fileEncoding" value="utf-8"/>
-	</bean>
-
-	<bean id="dataSource" destroy-method="close"
-		class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="driverClassName"
-			value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<!-- MyBatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan">
-			<list>
-				<value>com.yuhang</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<!-- org.hibernate.dialect.SQLServerDialect -->
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
-				<!-- 配置数据源 -->
-				<prop key="hibernate.c3p0.max_size">50</prop>
-				<prop key="hibernate.c3p0.min_size">5</prop>
-				<prop key="hibernate.c3p0.acquire_increment">5</prop>
-				<prop key="hibernate.c3p0.max_statements">200</prop>
-				<prop key="hibernate.c3p0.idle_test_period">3000</prop>
-				<prop key="hibernate.c3p0.validate">false</prop>
-				<prop key="hibernate.c3p0.timeout">5000</prop>
-				<prop key="current_session_context_class">thread</prop> <!-- 设置是否可以获取currentSession -->
-			</props>
-		</property>
+		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+		<property name="typeAliasesPackage" value="com.yuhang.domain" />
+		<!-- 显式指定Mapper文件位置 -->
+		<property name="mapperLocations" value="classpath:/mybatis/*Mapper.xml" />
+        <property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"/>
 	</bean>
-	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
+	<!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yuhang.dao" />
+		<property name="annotationClass" value="com.yuhang.dao.MyBatisRepository"/>
 	</bean>
-	
 
-	<!-- hibernate的事物管理sevices层面实现事物管理,而且达到和平台无关 -->
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+    <!-- 事务管理器, Jdbc单数据源事务 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+        <property name="nestedTransactionAllowed" value="true" />
+    </bean>
+
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="create*" propagation="REQUIRED" />
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="valid*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="do*" propagation="REQUIRED" />
+            <tx:method name="write*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="process*" propagation="REQUIRED" />
+            <tx:method name="cancel*" propagation="REQUIRED" />
+            <tx:method name="edit*" propagation="REQUIRED" />
+            <tx:method name="roll*" propagation="REQUIRED" />
+            <tx:method name="remove*" propagation="REQUIRED" />
+            <tx:method name="get*" propagation="SUPPORTS" />
+            <tx:method name="query*" propagation="SUPPORTS" />
+            <tx:method name="find*" propagation="SUPPORTS" />
+            <tx:method name="nested*" propagation="NESTED"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="interceptorPointCuts"
+                      expression="execution(* com.yuhang.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice"
+                     pointcut-ref="interceptorPointCuts"/>
+    </aop:config>
+
+    <!-- 使用annotation定义事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+    <!-- 定义aspectj -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <context:property-placeholder ignore-resource-not-found="true"
+                                  location="classpath*:/config.properties" />
+
+    <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+        <!-- Connection Info -->
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxActive" value="50" />
+        <property name="maxIdle" value="30" />
+        <property name="minIdle" value="10" />
+        <!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="minEvictableIdleTimeMillis" value="600000" />
+        <property name="testWhileIdle" value="true" />
+        <property name="validationQuery" value="select 1" />
+        <property name="testOnBorrow" value="true"/>
+    </bean>
     <!-- 邮件类 -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
         <property name="username"><value>${mail.username}</value></property>  
