@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.yuhang.dao.SettingDao">
+	<!-- ****************************************** Setting ********************************************** -->
+	<sql id="selectSetting">
+		select id,mkey,value,remark,status,type,can_del canDel,create_time
+		createTime
+	</sql>
+
+	<sql id="whereSetting">
+		<where>
+			<if test="key!=null">
+				mkey =#{key}
+			</if>
+		</where>
+	</sql>
+
+	<select id="findByMap" parameterType="map" resultType="Setting">
+		<include refid="selectSetting" />
+		FROM setting
+		<include refid="whereSetting" />
+		order by id desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+
+</mapper>

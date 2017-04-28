@@ -1,11 +1,11 @@
-package com.yuhang.service;
+package com.yuhang.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import com.yuhang.domain.ProjectUser;
 
-public interface ProjectUserService {
-
+@MyBatisRepository
+public interface ProjectUserDao {
 	List<ProjectUser> findByMap(Map<String, Object> map);
 }

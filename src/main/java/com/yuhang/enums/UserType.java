@@ -1,4 +1,4 @@
-package com.yuhang;
+package com.yuhang.enums;
 
 
 public enum UserType {

@@ -23,9 +23,8 @@ import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.util.Pool;
 
 /**
- * JedisTemplate 提供了一个template方法，负责对Jedis连接的获取与归还。
- * JedisAction<T> 和 JedisActionNoResult两种回调接口，适用于有无返回值两种情况。
- * 同时提供一些最常用函数的封装, 如get/set/zadd等。
+ * JedisTemplate 提供了一个template方法，负责对Jedis连接的获取与归还。 JedisAction<T> 和
+ * JedisActionNoResult两种回调接口，适用于有无返回值两种情况。 同时提供一些最常用函数的封装, 如get/set/zadd等。
  */
 public class JedisTemplate {
 	private static Logger logger = LoggerFactory.getLogger(JedisTemplate.class);
@@ -223,14 +222,14 @@ public class JedisTemplate {
 		});
 	}
 
-    public Long incrBy(final String key,final long value) {
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.incrBy(key,value);
-            }
-        });
-    }
+	public Long incrBy(final String key, final long value) {
+		return execute(new JedisAction<Long>() {
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.incrBy(key, value);
+			}
+		});
+	}
 
 	public Long decr(final String key) {
 		return execute(new JedisAction<Long>() {
@@ -260,9 +259,10 @@ public class JedisTemplate {
 			}
 		});
 	}
-	
+
 	/**
 	 * 返回list所有值
+	 * 
 	 * @param key
 	 * @return
 	 */
@@ -278,6 +278,7 @@ public class JedisTemplate {
 
 	/**
 	 * 返回指定索引的list值
+	 * 
 	 * @param key
 	 * @param start
 	 * @param end
@@ -285,7 +286,7 @@ public class JedisTemplate {
 	 */
 	public List<String> lrange(final String key, final long start, final long end) {
 		return execute(new JedisAction<List<String>>() {
-			
+
 			@Override
 			public List<String> action(Jedis jedis) {
 				return jedis.lrange(key, start, end);
@@ -346,15 +347,15 @@ public class JedisTemplate {
 		});
 	}
 
-    public Double zincrby(final String key, final String member, final double score) {
-        return execute(new JedisAction<Double>() {
+	public Double zincrby(final String key, final String member, final double score) {
+		return execute(new JedisAction<Double>() {
 
-            @Override
-            public Double action(Jedis jedis) {
-                return jedis.zincrby(key,score,member);
-            }
-        });
-    }
+			@Override
+			public Double action(Jedis jedis) {
+				return jedis.zincrby(key, score, member);
+			}
+		});
+	}
 
 	/**
 	 * 删除sorted set中的元素，成功删除返回true，key或member不存在返回false。
@@ -394,34 +395,36 @@ public class JedisTemplate {
 			}
 		});
 	}
-    public ScanResult<Tuple> zscan(final String key, final String cursor) {
-        return execute(new JedisAction<ScanResult<Tuple>>() {
-            @Override
-            public ScanResult<Tuple> action(Jedis jedis) {
-                return jedis.zscan(key, cursor);
-            }
-        });
-    }
-    public ScanResult<Tuple> zscan(final String key, final String cursor,final ScanParams params) {
-        return execute(new JedisAction<ScanResult<Tuple>>() {
-            @Override
-            public ScanResult<Tuple> action(Jedis jedis) {
-                return jedis.zscan(key, cursor,params);
-            }
-        });
-    }
 
-    public Long hset(final String key,  final String field, final String value) {
-        return execute(new JedisAction<Long>() {
+	public ScanResult<Tuple> zscan(final String key, final String cursor) {
+		return execute(new JedisAction<ScanResult<Tuple>>() {
+			@Override
+			public ScanResult<Tuple> action(Jedis jedis) {
+				return jedis.zscan(key, cursor);
+			}
+		});
+	}
 
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.hset(key, field, value);
-            }
-        });
-    }
-    
-    /**
+	public ScanResult<Tuple> zscan(final String key, final String cursor, final ScanParams params) {
+		return execute(new JedisAction<ScanResult<Tuple>>() {
+			@Override
+			public ScanResult<Tuple> action(Jedis jedis) {
+				return jedis.zscan(key, cursor, params);
+			}
+		});
+	}
+
+	public Long hset(final String key, final String field, final String value) {
+		return execute(new JedisAction<Long>() {
+
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.hset(key, field, value);
+			}
+		});
+	}
+
+	/**
 	 * 如果key不存在, 返回null.
 	 */
 	public String hget(final String key, final String field) {
@@ -433,106 +436,114 @@ public class JedisTemplate {
 			}
 		});
 	}
-    public Long hdel(final String key, final String field) {
-        return execute(new JedisAction<Long>() {
 
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.hdel(key, field);
-            }
-        });
-    }
-    public Map<String,String> hgetAll(final String key) {
-        return execute(new JedisAction<Map<String,String>>() {
+	public Long hdel(final String key, final String field) {
+		return execute(new JedisAction<Long>() {
 
-            @Override
-            public Map<String,String> action(Jedis jedis) {
-                return jedis.hgetAll(key);
-            }
-        });
-    }
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.hdel(key, field);
+			}
+		});
+	}
 
-    public void expire(final String key,final int expire){
-        execute(new JedisActionNoResult() {
-            @Override
-            public void action(Jedis jedis) {
-               int ttl = jedis.ttl(key).intValue();
-                if(ttl>0)
-                    jedis.expire(key,ttl+expire);
-            }
-        });
-    }
-    
-    public Long ttl(final String key) {
-        return execute(new JedisAction<Long>() {
+	public Map<String, String> hgetAll(final String key) {
+		return execute(new JedisAction<Map<String, String>>() {
 
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.ttl(key);
-            }
-        });
-    }
+			@Override
+			public Map<String, String> action(Jedis jedis) {
+				return jedis.hgetAll(key);
+			}
+		});
+	}
 
-    public Set<String> keys(final String key) {
-        return execute(new JedisAction<Set<String>>() {
-            @Override
-            public Set<String> action(Jedis jedis) {
-                return jedis.keys(key);
-            }
-        });
-    }
+	public void expire(final String key, final int expire) {
+		execute(new JedisActionNoResult() {
+			@Override
+			public void action(Jedis jedis) {
+				int ttl = jedis.ttl(key).intValue();
+				if (ttl > 0)
+					jedis.expire(key, ttl + expire);
+			}
+		});
+	}
 
-    public Long sadd(final String key,  final String value) {
-        return execute(new JedisAction<Long>() {
+	public Long ttl(final String key) {
+		return execute(new JedisAction<Long>() {
 
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.sadd(key, value);
-            }
-        });
-    }
-    public Boolean sismember(final String key,  final String member) {
-        return execute(new JedisAction<Boolean>() {
-            @Override
-            public Boolean action(Jedis jedis) {
-                return jedis.sismember(key, member);
-            }
-        });
-    }
-    public Long srem(final String key,  final String value) {
-        return execute(new JedisAction<Long>() {
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.ttl(key);
+			}
+		});
+	}
 
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.srem(key, value);
-            }
-        });
-    }
-    public Set<String> smembers(final String key) {
-        return execute(new JedisAction<Set<String>>() {
+	public Set<String> keys(final String key) {
+		return execute(new JedisAction<Set<String>>() {
+			@Override
+			public Set<String> action(Jedis jedis) {
+				return jedis.keys(key);
+			}
+		});
+	}
 
-            @Override
-            public Set<String> action(Jedis jedis) {
-                return jedis.smembers(key);
-            }
-        });
-    }    
-    public Boolean exists(final String key) {
-        return execute(new JedisAction<Boolean>() {
-            @Override
-            public Boolean action(Jedis jedis) {
-                return jedis.exists(key);
-            }
-        });
-    }
-    public Long dbSize() {
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.dbSize();
-            }
-        });
-    }
+	public Long sadd(final String key, final String value) {
+		return execute(new JedisAction<Long>() {
+
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.sadd(key, value);
+			}
+		});
+	}
+
+	public Boolean sismember(final String key, final String member) {
+		return execute(new JedisAction<Boolean>() {
+			@Override
+			public Boolean action(Jedis jedis) {
+				return jedis.sismember(key, member);
+			}
+		});
+	}
+
+	public Long srem(final String key, final String value) {
+		return execute(new JedisAction<Long>() {
+
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.srem(key, value);
+			}
+		});
+	}
+
+	public Set<String> smembers(final String key) {
+		return execute(new JedisAction<Set<String>>() {
+
+			@Override
+			public Set<String> action(Jedis jedis) {
+				return jedis.smembers(key);
+			}
+		});
+	}
+
+	public Boolean exists(final String key) {
+		return execute(new JedisAction<Boolean>() {
+			@Override
+			public Boolean action(Jedis jedis) {
+				return jedis.exists(key);
+			}
+		});
+	}
+
+	public Long dbSize() {
+		return execute(new JedisAction<Long>() {
+			@Override
+			public Long action(Jedis jedis) {
+				return jedis.dbSize();
+			}
+		});
+	}
+
 	public byte[] get(final byte[] key) {
 		return execute(new JedisAction<byte[]>() {
 
@@ -542,6 +553,7 @@ public class JedisTemplate {
 			}
 		});
 	}
+
 	public Boolean del(final byte[]... keys) {
 		return execute(new JedisAction<Boolean>() {
 
@@ -551,6 +563,7 @@ public class JedisTemplate {
 			}
 		});
 	}
+
 	public void set(final byte[] key, final byte[] value) {
 		execute(new JedisActionNoResult() {
 
@@ -560,15 +573,17 @@ public class JedisTemplate {
 			}
 		});
 	}
-    public Set<byte[]> getKeys(final String key) {
-        return execute(new JedisAction<Set<byte[]>>() {
-            @Override
-            public Set<byte[]> action(Jedis jedis) {
-                return jedis.keys(key.getBytes());
-            }
-        });
-    }
-    public void setex(final byte[] key, final byte[] value, final int seconds) {
+
+	public Set<byte[]> getKeys(final String key) {
+		return execute(new JedisAction<Set<byte[]>>() {
+			@Override
+			public Set<byte[]> action(Jedis jedis) {
+				return jedis.keys(key.getBytes());
+			}
+		});
+	}
+
+	public void setex(final byte[] key, final byte[] value, final int seconds) {
 		execute(new JedisActionNoResult() {
 			@Override
 			public void action(Jedis jedis) {
@@ -585,7 +600,7 @@ public class JedisTemplate {
 			@Override
 			public T action(Jedis jedis) {
 				byte[] ret = jedis.get(key.getBytes());
-				if(ret!=null)
+				if (ret != null)
 					return (T) SerializationUtils.deserialize(ret);
 				return null;
 			}
@@ -594,22 +609,50 @@ public class JedisTemplate {
 
 	/**
 	 * 设置对象
+	 * 
 	 * @param key
 	 * @param value
-	 * @param expireSeconds 过期时间，大于0有效
+	 * @param expireSeconds
+	 *            过期时间，大于0有效
 	 */
-	public void setObj(final String key,final Serializable value,final int expireSeconds) {
+	public void setObj(final String key, final Serializable value, final int expireSeconds) {
 		execute(new JedisActionNoResult() {
 			@Override
 			public void action(Jedis jedis) {
 				byte[] obj = SerializationUtils.serialize(value);
-				jedis.set(key.getBytes(),obj);
-				if(expireSeconds>0)
-					jedis.expire(key,expireSeconds);
+				jedis.set(key.getBytes(), obj);
+				if (expireSeconds > 0)
+					jedis.expire(key, expireSeconds);
 			}
 		});
+	}
 
+	public boolean setObj(final String key, final String field, final Object value,
+			final int expireTime) {
+		execute(new JedisActionNoResult() {
+			@Override
+			public void action(Jedis jedis) {
+				jedis.hset((Config.REDIS_KEY_PREFIX + key).getBytes(), field.getBytes(),
+						SerializeUtil.serialize(value));
+				if (expireTime > 0) {
+					jedis.expire((Config.REDIS_KEY_PREFIX + key).getBytes(), expireTime);
+				}
+			}
+		});
+		return true;
+	}
 
+	public Object getObj(final String key, final String field) {
+		return execute(new JedisAction<Object>() {
+			@Override
+			public Object action(Jedis jedis) {
+				byte[] obj = jedis.hget((Config.REDIS_KEY_PREFIX + key).getBytes(),
+						field.getBytes());
+				if (obj == null)
+					return null;
+				return SerializeUtil.unserialize(obj);
+			}
+		});
 	}
 
 }

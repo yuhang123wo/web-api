@@ -7,7 +7,9 @@ import java.util.Map;
 
 import com.yuhang.domain.Project;
 import com.yuhang.domain.ProjectUser;
+import com.yuhang.domain.Role;
 import com.yuhang.domain.User;
+import com.yuhang.enums.UserType;
 import com.yuhang.service.ProjectService;
 import com.yuhang.service.ProjectUserService;
 import com.yuhang.service.RoleService;
@@ -22,9 +24,8 @@ public class LoginInfoDto implements Serializable {
 	private String authStr;// 权限，由用户权限、角色拼接而成
 	private String roleId;
 	private long id;
-	private byte type;
 	private String email;
-	private Map<Long, ProjectUser> projects = new HashMap<Long, ProjectUser>();
+	private Map<Integer, ProjectUser> projects = new HashMap<Integer, ProjectUser>();
 
 	public LoginInfoDto(User user, RoleService roleService, ProjectService projectService,
 			ProjectUserService projectUserService) {
@@ -32,7 +33,6 @@ public class LoginInfoDto implements Serializable {
 		this.trueName = user.getTrueName();
 		this.roleId = user.getRoleId();
 		this.id = user.getId();
-		this.type = user.getType();
 		this.email = user.getEmail();
 
 		StringBuilder sb = new StringBuilder(",");
@@ -43,7 +43,26 @@ public class LoginInfoDto implements Serializable {
 			sb.append(Const.AUTH_PROJECT + project.getId() + ",");
 		}
 
+		// 管理员，将最高管理员，管理员
+		if ((user.getType() + "").equals(UserType.ADMIN.getType() + "")) {
+			sb.append(user.getAuth() + ",");
+			sb.append("ADMIN,");
+			if (user.getRoleId().indexOf("super") >= 0)
+				sb.append("super,");
+			if (user.getRoleId() != null && !user.getRoleId().equals("")) {
+				List<Role> roles = roleService.findByMap(Tools.getMap("roleId", user.getRoleId()));
+				// 将角色中的权限添加至用户权限中
+				for (Role role : roles) {
+					sb.append(role.getAuth() + ",");
+				}
+			}
+		}
 
+		// 项目成员
+		for (ProjectUser p : projectUserService.findByMap(Tools.getMap("userId", user.getId()))) {
+			projects.put(p.getProjectId(), p);
+			sb.append(Const.AUTH_PROJECT + p.getProjectId() + ",");
+		}
 		this.authStr = sb.toString();
 	}
 
@@ -81,11 +100,11 @@ public class LoginInfoDto implements Serializable {
 		this.email = email;
 	}
 
-	public Map<Long, ProjectUser> getProjects() {
+	public Map<Integer, ProjectUser> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(Map<Long, ProjectUser> projects) {
+	public void setProjects(Map<Integer, ProjectUser> projects) {
 		this.projects = projects;
 	}
 

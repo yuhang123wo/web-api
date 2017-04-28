@@ -7,5 +7,5 @@ import com.yuhang.domain.Role;
 
 public interface RoleService {
 
-	List<Role> loadByMap(Map<String, Object> params);
+	List<Role> findByMap(Map<String, Object> params);
 }

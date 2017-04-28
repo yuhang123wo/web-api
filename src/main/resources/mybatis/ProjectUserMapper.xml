@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.yuhang.dao.ProjectUserDao">
+	<sql id="selectProjectUser">
+    	select id,status,sequence,create_time createTime,project_id projectId,user_id userId,add_module addModule,del_module delModule,mod_module modModule,add_inter addInter,del_inter delInter,mod_inter modInter,add_article addArticle,del_article delArticle,mod_article modArticle,add_source addSource,del_source delSource,mod_source modSource,add_dict addDict,del_dict delDict,mod_dict modDict,user_email userEmail,user_name userName,add_error addError,del_error delError,mod_error modError
+	</sql>
+	
+	<sql id="whereProjectUser">
+        <where>
+         <if test="userId!=null">
+            user_id =#{userId}
+         </if>
+        </where>
+    </sql>
+    
+    <select id="findByMap" parameterType="map" resultType="ProjectUser">
+        <include refid="selectProjectUser"/> FROM project_user <include refid="whereProjectUser"/>
+        order by id desc 
+        <if test="start!=null and size!=null">
+	        limit #{start},#{size}
+        </if>
+    </select>
+    
+
+
+</mapper>
