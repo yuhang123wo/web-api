@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <!DOCTYPE tiles-definitions PUBLIC 
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- 布局模板 -->
+	<definition name="manage.layout" template="/WEB-INF/views/layout.jsp">
+		<put-attribute name="menu" value="" />
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="" />
+		<put-list-attribute name="scriptItems">
+			<add-attribute value="js/jquery-1.10.2.min.js"></add-attribute>
+			<add-attribute value="js/jquery-ui-1.9.2.custom.min.js"></add-attribute>
+			<add-attribute value="js/jquery-migrate-1.2.1.min.js"></add-attribute>
+			<add-attribute value="js/bootstrap.min.js"></add-attribute>
+			<add-attribute value="js/modernizr.min.js"></add-attribute>
+			<add-attribute value="js/jquery.nicescroll.js"></add-attribute>
+			<add-attribute value="js/iCheck/jquery.icheck.js"></add-attribute>
+			<add-attribute value="js/dashboard-chart-init.js"></add-attribute>
+			<add-attribute value="js/scripts.js"></add-attribute>
+			<add-attribute value="js/dashboard-chart-init.js"></add-attribute>
+			<add-attribute value="js/morris-chart/morris.js"></add-attribute>
+			<add-attribute value="js/morris-chart/raphael-min.js"></add-attribute>
+		</put-list-attribute>
+	</definition>
+	<definition name="manage.index" extends="manage.layout">
+		<put-attribute name="seq" value="-1"></put-attribute>
+		<put-attribute name="title" value="首页" />
+		<put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+		<put-list-attribute name="scriptItems" inherit="true">
+		</put-list-attribute>
+	</definition>
+	<definition name="project.list" extends="manage.layout">
+		<put-attribute name="seq" value="11"></put-attribute>
+		<put-attribute name="title" value="项目列表" />
+		<put-attribute name="body" value="/WEB-INF/views/project/list.jsp" />
+		<put-list-attribute name="scriptItems" inherit="true">
+		  <add-attribute value="js/advanced-datatable/js/jquery.dataTables.js"></add-attribute>
+		  <add-attribute value="js/data-tables/DT_bootstrap.js"></add-attribute>
+		  <add-attribute value="js/dynamic_table_init.js"></add-attribute>
+		</put-list-attribute>
+	</definition>
+</tiles-definitions>

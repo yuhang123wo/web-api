@@ -27,7 +27,6 @@
 
 (function( factory ) {
 	"use strict";
-
 	// Define as an AMD module if possible
 	if ( typeof define === 'function' && define.amd )
 	{
@@ -11425,7 +11424,6 @@
 	 *  @extends DataTable.models.ext
 	 */
 	DataTable.ext = $.extend( true, {}, DataTable.models.ext );
-	
 	$.extend( DataTable.ext.oStdClasses, {
 		"sTable": "dataTable",
 	

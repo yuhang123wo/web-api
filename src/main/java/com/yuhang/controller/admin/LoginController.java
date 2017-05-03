@@ -36,13 +36,13 @@ public class LoginController extends BaseController {
 				if (MD5.encrytMD5(model.getPassword()).equals(user.getPassword())
 						&& model.getUserName().equals(user.getUserName())) {
 					userService.login(model, user, request, response);
-					return "indexx";
+					return "manage.index";
 				}
 				model.setTipMessage("用户密码有误");
-				return "indexg";
+				return "login";
 			} else {
 				model.setTipMessage("用户名不存在");
-				return "indexg";
+				return "login";
 			}
 		} catch (Exception e) {
 			if (e instanceof MyException) {
@@ -63,9 +63,9 @@ public class LoginController extends BaseController {
 				model.setTipMessage("未知异常，请查看日志：" + cusedBy);
 			}
 		}
-		return "indexg";
+		return "login";
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(MD5.encrytMD5("a"));
 	}

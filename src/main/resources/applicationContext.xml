@@ -113,7 +113,7 @@
         <property name="testOnBorrow" value="true"/>
     </bean>
     <!-- 邮件类 -->
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
+<!--     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">  
         <property name="username"><value>${mail.username}</value></property>  
         <property name="password"><value>${mail.password}</value></property>  
         <property name="host"><value>${mail.host}</value></property>  
@@ -123,6 +123,6 @@
                 <prop key="mail.smtp.timeout">${mail.timeout}</prop>  
             </props>  
         </property>  
-	</bean> 
+	</bean>  -->
 	<import resource="applicationContext-redis.xml"/>
 </beans>

@@ -22,5 +22,12 @@
 	        limit #{start},#{size}
         </if>
     </select>
+    
+      <select id="countFindByMap" parameterType="map" resultType="int">
+        select count(1) FROM project <include refid="whereProject"/>
+        <if test="start!=null and size!=null">
+	        limit #{start},#{size}
+        </if>
+    </select>
 
 </mapper>

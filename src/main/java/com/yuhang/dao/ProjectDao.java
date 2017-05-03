@@ -9,4 +9,6 @@ import com.yuhang.domain.Project;
 public interface ProjectDao {
 
 	List<Project> findByMap(Map<String, Object> map);
+	
+	int countFindByMap(Map<String, Object> map);
 }

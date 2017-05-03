@@ -12,7 +12,7 @@
 		<!-- 编译时的编码 -->
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
-		<spring_version>4.2.0.RELEASE</spring_version>
+		<spring_version>4.1.6.RELEASE</spring_version>
 	</properties>
 	<dependencies>
 		<!-- hibernate -->
@@ -26,10 +26,15 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.2.3</version>
 		</dependency>
+	   <dependency>
+		<groupId>org.springframework.data</groupId>
+		<artifactId>spring-data-jpa</artifactId>
+		<version>1.4.4.RELEASE</version>
+	   </dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.8.9</version>
+			<version>1.8.7</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -87,21 +92,9 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring_version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring_version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
 			<version>${spring_version}</version>
 		</dependency>
 		<dependency>
@@ -111,12 +104,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
+			<artifactId>spring-aop</artifactId>
 			<version>${spring_version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
+			<artifactId>spring-aspects</artifactId>
 			<version>${spring_version}</version>
 		</dependency>
 		<dependency>
