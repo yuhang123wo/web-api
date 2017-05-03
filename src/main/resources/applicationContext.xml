@@ -19,7 +19,6 @@
         http://www.springframework.org/schema/task
     	http://www.springframework.org/schema/task/spring-task-4.0.xsd
         ">
-    <tx:annotation-driven transaction-manager="transactionManager" />
 	<!--注解扫描范围 -->
 	<context:annotation-config />
 	<mvc:annotation-driven/>

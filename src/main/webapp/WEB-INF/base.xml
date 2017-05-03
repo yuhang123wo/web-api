@@ -10,18 +10,12 @@
 		<put-attribute name="title" value="" />
 		<put-attribute name="body" value="" />
 		<put-list-attribute name="scriptItems">
-			<add-attribute value="js/jquery-1.10.2.min.js"></add-attribute>
-			<add-attribute value="js/jquery-ui-1.9.2.custom.min.js"></add-attribute>
-			<add-attribute value="js/jquery-migrate-1.2.1.min.js"></add-attribute>
+			<add-attribute value="js/jquery-1.11.1.min.js"></add-attribute>
 			<add-attribute value="js/bootstrap.min.js"></add-attribute>
-			<add-attribute value="js/modernizr.min.js"></add-attribute>
 			<add-attribute value="js/jquery.nicescroll.js"></add-attribute>
-			<add-attribute value="js/iCheck/jquery.icheck.js"></add-attribute>
-			<add-attribute value="js/dashboard-chart-init.js"></add-attribute>
 			<add-attribute value="js/scripts.js"></add-attribute>
-			<add-attribute value="js/dashboard-chart-init.js"></add-attribute>
-			<add-attribute value="js/morris-chart/morris.js"></add-attribute>
-			<add-attribute value="js/morris-chart/raphael-min.js"></add-attribute>
+			<add-attribute value="js/handlebars.min.js"></add-attribute>
+			<add-attribute value="js/page.js"></add-attribute>
 		</put-list-attribute>
 	</definition>
 	<definition name="manage.index" extends="manage.layout">
@@ -36,9 +30,6 @@
 		<put-attribute name="title" value="项目列表" />
 		<put-attribute name="body" value="/WEB-INF/views/project/list.jsp" />
 		<put-list-attribute name="scriptItems" inherit="true">
-		  <add-attribute value="js/advanced-datatable/js/jquery.dataTables.js"></add-attribute>
-		  <add-attribute value="js/data-tables/DT_bootstrap.js"></add-attribute>
-		  <add-attribute value="js/dynamic_table_init.js"></add-attribute>
 		</put-list-attribute>
 	</definition>
 </tiles-definitions>

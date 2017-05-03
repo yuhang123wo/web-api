@@ -102,9 +102,14 @@
         </div>
     </div>
     <!-- left side end-->
-    
+     <c:if test="${list != null }">
+	<c:forEach var="item" items="${list}"> 
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath}/${item }"></script>
+	</c:forEach>
+ </c:if>
     <!-- main content start-->
-    <div class="main-content" >
+    <div class="main-content" style="height: 100px">
     
         <tiles:insertAttribute name="body" />
         <!--footer section start-->
@@ -118,10 +123,4 @@
     <!-- main content end-->
 </section>
 </body>
-  <c:if test="${list != null }">
-	<c:forEach var="item" items="${list}">
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath}/${item }"></script>
-	</c:forEach>
- </c:if>
 </html>
